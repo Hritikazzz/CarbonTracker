@@ -1,0 +1,32 @@
+{% extends 'base.html'%}
+
+{% load static %}
+
+{%block title%}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbon Footprint Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/services.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+{%endblock title%}
+
+{%block body%}
+<div class="calculator">
+    <h2>Household Carbon Footprint Calculator</h2>
+    <form method="POST" action="/services/">
+        {% csrf_token %}
+        <input type="number" name="electricity" placeholder="Electricity (kWh)" required>
+        <small>Note: Electricity emissions are estimated using Carbon Sutra API.</small>
+        <input type="number" name="natural_gas" placeholder="Natural Gas (kWh)">
+        <input type="number" name="heating_oil" placeholder="Heating Oil (litres)">
+        <input type="number" name="coal" placeholder="Coal (tonnes)">
+        <input type="number" name="lpg" placeholder="LPG (litres)">
+        <input type="number" name="propane" placeholder="Propane (litres)">
+        <input type="number" name="wood" placeholder="Wood (tonnes)">
+        <button type="submit" class="btn btn-dark">Calculate and Save</button>
+    </form>
+</div>    
+{%endblock body%}

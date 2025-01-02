@@ -1,0 +1,39 @@
+{% extends 'base.html'%}
+
+{%block title%}
+Contact Us
+{%endblock title%}
+
+{%block body%}
+<div class="container">
+    <img class="d-block my-1 w-100" src="https://strapiprod.knowlarity.com/uploads/contact_us_5a6756504e.jpg">
+    <h1 class="text-center">Contact Us</h1>
+    <p class="text-center lead text-muted">Reach out to our team for any inquiries or assistance.</p>
+    <form method="post" action="/contact">
+    {% csrf_token %}
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" class="form-control" id="name" name="name" placeholder="Enter your Name">
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="text" class="form-control" id="email" name="email" placeholder="Enter your Email">
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter your Phone Number">
+        </div>
+
+        <div class="form-group">
+          <label for="desc">Your Question</label>
+          <textarea class="form-control" id="desc" name="desc" rows="3"></textarea>
+        </div>
+
+        <div class="my-2">
+            <button type="submit" class="btn btn-dark">Submit</button>
+        </div>
+      </form>
+</div>
+{%endblock body%}

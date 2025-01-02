@@ -1,0 +1,122 @@
+{% extends 'base.html'%}
+{% load static %}
+{%block title%}
+Dashboard
+{%endblock title%}
+
+{%block body%}
+<div class="container mt-5">
+    <h3 class="mb-4">Carbon Footprint Dashboard</h3>
+
+    <div class="row">
+        <!-- Monthly Carbon Footprint -->
+        <div class="col-md-6">
+            <h4>Monthly Carbon Footprint (2025)</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th>Total (Tonnes CO₂)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in monthly_data %}
+                    <tr>
+                        <td>{{ data.date__month }}</td>
+                        <td>{{ data.total }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Yearly Carbon Footprint -->
+        <div class="col-md-6">
+            <h4>Yearly Carbon Footprint</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Year</th>
+                        <th>Total (Tonnes CO₂)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in yearly_data %}
+                    <tr>
+                        <td>{{ data.date__year }}</td>
+                        <td>{{ data.total }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Carbon Footprint Distribution Chart -->
+    <div class="mt-5">
+        <h4>Carbon Footprint Distribution</h4>
+        <canvas id="carbonFootprintChart" style="max-width: 800px; max-height: 800px;"></canvas>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const ctx = document.getElementById("carbonFootprintChart").getContext("2d");
+
+        const labels = [
+            "Electricity",
+            "Natural Gas",
+            "Heating Oil",
+            "Coal",
+            "LPG",
+            "Propane",
+            "Wood",
+            "Total Footprint"
+        ];
+
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: "Carbon Footprint Distribution (Tonnes CO₂)",
+                data: [
+                    {{ carbon_data.electricity|default:0 }},
+                    {{ carbon_data.natural_gas|default:0 }},
+                    {{ carbon_data.heating_oil|default:0 }},
+                    {{ carbon_data.coal|default:0 }},
+                    {{ carbon_data.lpg|default:0 }},
+                    {{ carbon_data.propane|default:0 }},
+                    {{ carbon_data.wood|default:0 }},
+                    {{ carbon_data.total_footprint|default:0 }}
+                ],
+                backgroundColor: [
+                    "#936639",
+                    "#a68a64",
+                    "#b6ad90",
+                    "#c2c5aa",
+                    "#a4ac86",
+                    "#656d4a",
+                    "#727d71",
+                    "#333d29"
+                ],
+                hoverOffset: 4
+            }]
+        };
+
+        const config = {
+            type: "doughnut",
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: "top",
+                    },
+                },
+            },
+        };
+
+        new Chart(ctx, config);
+    });
+</script>
+{%endblock body%}
